@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Expense Tracker</h1>
+        <p>Track where your money goes</p>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>Add Expense</h2>
+
+            <form id="expense-form">
+
+                <label for="title">Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    required
+                >
+
+                <label for="amount">Amount</label>
+                <input
+                    type="number"
+                    id="amount"
+                    name="amount"
+                    step="0.01"
+                    required
+                >
+
+                <label for="category">Category</label>
+                <input
+                    type="text"
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                <label for="date">Date</label>
+                <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                >
+
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                ></textarea>
+
+                <button type="submit">Add Expense</button>
+
+            </form>
+        </section>
+
+
+        <section>
+            <h2>Your Expenses</h2>
+
+            <div id="expense-list">
+                <p>No expenses yet.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
