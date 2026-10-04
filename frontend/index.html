@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Expense Tracker</title>
 
     <link rel="stylesheet" href="style.css">
@@ -10,75 +12,111 @@
 
 <body>
 
-    <header>
-        <h1>Expense Tracker</h1>
-        <p>Track where your money goes</p>
+    <!-- Header -->
+    <header class="header">
+
+        <div>
+            <h1>Expense Tracker</h1>
+            <p>Manage your expenses easily</p>
+        </div>
+
+        <button onclick="logout()">
+            Logout
+        </button>
+
     </header>
 
+
+    <!-- Add / Edit Expense -->
     <main>
 
-        <section>
+        <section class="expense-form">
+
             <h2>Add Expense</h2>
 
-            <form id="expense-form">
+            <!-- Used internally when editing -->
+            <input
+                id="editId"
+                type="hidden"
+            >
 
-                <label for="title">Title</label>
+            <div class="form-group">
+
                 <input
-                    type="text"
                     id="title"
-                    name="title"
-                    required
-                >
-
-                <label for="amount">Amount</label>
-                <input
-                    type="number"
-                    id="amount"
-                    name="amount"
-                    step="0.01"
-                    required
-                >
-
-                <label for="category">Category</label>
-                <input
                     type="text"
-                    id="category"
-                    name="category"
-                    required
+                    placeholder="Expense title"
                 >
 
-                <label for="date">Date</label>
                 <input
-                    type="date"
-                    id="date"
-                    name="date"
-                    required
+                    id="amount"
+                    type="number"
+                    placeholder="Amount"
+                    step="0.01"
                 >
 
-                <label for="description">Description</label>
-                <textarea
+                <input
+                    id="category"
+                    type="text"
+                    placeholder="Category"
+                >
+
+                <input
+                    id="date"
+                    type="date"
+                >
+
+                <input
                     id="description"
-                    name="description"
-                ></textarea>
+                    type="text"
+                    placeholder="Description"
+                >
 
-                <button type="submit">Add Expense</button>
+            </div>
 
-            </form>
+            <button
+                id="addButton"
+                onclick="handleAddExpense()"
+            >
+                Add Expense
+            </button>
+
+            <button
+                onclick="clearExpenseForm()"
+            >
+                Clear
+            </button>
+
         </section>
 
 
-        <section>
-            <h2>Your Expenses</h2>
+        <!-- Expenses -->
+        <section class="expense-list">
 
-            <div id="expense-list">
-                <p>No expenses yet.</p>
+            <div class="section-header">
+
+                <h2>My Expenses</h2>
+
+                <button onclick="loadExpenses()">
+                    Refresh
+                </button>
+
             </div>
+
+            <div id="expenses"></div>
 
         </section>
 
     </main>
 
+
     <script src="script.js"></script>
+    <script>
+    if (!localStorage.getItem("token")) {
+        window.location.href = "login.html";
+    }
+    </script>
 
 </body>
+
 </html>

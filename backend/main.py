@@ -2,11 +2,19 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from backend.database import engine, get_db
-from backend.models import Base, Expense
-from backend.schemas import ExpenseCreate, ExpenseResponse
+from backend.database import get_db
+from backend.models import Expense, User
+from backend.schemas import ExpenseCreate, ExpenseResponse, UserCreate
+from backend.security import (
+    create_access_token,
+    get_current_user,
+    hash_password,
+    verify_password,
+)
+
 
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,8 +24,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-Base.metadata.create_all(bind=engine)
-
 
 @app.get("/")
 def home():
@@ -25,17 +31,24 @@ def home():
 
 
 @app.get("/expenses", response_model=list[ExpenseResponse])
-def get_expenses(db: Session = Depends(get_db)):
-    return db.query(Expense).all()
+def get_expenses(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return db.query(Expense).filter(
+        Expense.user_id == current_user.id
+    ).all()
 
 
 @app.get("/expenses/{expense_id}", response_model=ExpenseResponse)
 def get_expense(
     expense_id: int,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     expense = db.query(Expense).filter(
-        Expense.id == expense_id
+        Expense.id == expense_id,
+        Expense.user_id == current_user.id
     ).first()
 
     if expense is None:
@@ -54,6 +67,7 @@ def get_expense(
 )
 def create_expense(
     expense: ExpenseCreate,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     new_expense = Expense(
@@ -61,7 +75,8 @@ def create_expense(
         amount=expense.amount,
         category=expense.category,
         date=expense.date,
-        description=expense.description
+        description=expense.description,
+        user_id=current_user.id
     )
 
     db.add(new_expense)
@@ -75,10 +90,12 @@ def create_expense(
 def update_expense(
     expense_id: int,
     expense: ExpenseCreate,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     existing_expense = db.query(Expense).filter(
-        Expense.id == expense_id
+        Expense.id == expense_id,
+        Expense.user_id == current_user.id
     ).first()
 
     if existing_expense is None:
@@ -102,10 +119,12 @@ def update_expense(
 @app.delete("/expenses/{expense_id}")
 def delete_expense(
     expense_id: int,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     expense = db.query(Expense).filter(
-        Expense.id == expense_id
+        Expense.id == expense_id,
+        Expense.user_id == current_user.id
     ).first()
 
     if expense is None:
@@ -118,3 +137,67 @@ def delete_expense(
     db.commit()
 
     return {"message": "Expense deleted successfully"}
+
+
+@app.post("/register")
+def register(
+    user: UserCreate,
+    db: Session = Depends(get_db)
+):
+    existing_user = db.query(User).filter(
+        User.email == user.email
+    ).first()
+
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered"
+        )
+
+    hashed_password = hash_password(user.password)
+
+    new_user = User(
+        email=user.email,
+        password_hash=hashed_password
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {
+        "message": "User registered successfully",
+        "user_id": new_user.id
+    }
+
+
+@app.post("/login")
+def login(
+    user: UserCreate,
+    db: Session = Depends(get_db)
+):
+    existing_user = db.query(User).filter(
+        User.email == user.email
+    ).first()
+
+    if existing_user is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    if not verify_password(
+        user.password,
+        existing_user.password_hash
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    access_token = create_access_token(existing_user.id)
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
