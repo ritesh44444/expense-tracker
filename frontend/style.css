@@ -1,3 +1,7 @@
+/* =========================
+   GLOBAL
+   ========================= */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,9 +9,28 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    color: #222;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: #f4f6fa;
+    color: #202635;
+    line-height: 1.6;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid #818cf8;
+    outline-offset: 2px;
 }
 
 
@@ -16,136 +39,243 @@ body {
    ========================= */
 
 .auth-container {
-    width: 400px;
-    margin: 100px auto;
-    padding: 40px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 420px;
+    margin: 80px auto;
+    padding: 35px;
+    background: #fff;
+    border: 1px solid #e6e9f0;
+    border-radius: 14px;
     text-align: center;
 }
 
 .auth-container h1 {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .auth-container h2 {
-    margin-bottom: 25px;
+    margin: 20px 0;
 }
 
 .auth-container input {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
+    border: 1px solid #d8dce5;
+    border-radius: 7px;
 }
 
 .auth-container button {
     width: 100%;
     padding: 12px;
     border: none;
-    border-radius: 6px;
-    background: #333;
+    border-radius: 7px;
+    background: #4f46e5;
     color: white;
-    font-size: 16px;
-    cursor: pointer;
 }
 
 .auth-container button:hover {
-    background: #555;
+    background: #4338ca;
 }
 
 .auth-container p {
     margin-top: 20px;
 }
 
+a {
+    color: #4f46e5;
+}
+
 
 /* =========================
-   MAIN HEADER
+   HEADER
    ========================= */
 
 .header {
-    background: white;
-    padding: 25px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    gap: 20px;
+    padding: 24px 5%;
+    background: #fff;
+    border-bottom: 1px solid #e8eaf0;
 }
 
 .header h1 {
-    margin-bottom: 5px;
+    font-size: 28px;
+    line-height: 1.3;
 }
 
 .header p {
-    color: #666;
+    color: #737b8c;
+    margin-top: 5px;
 }
 
-.header button {
+.logout-button {
     padding: 10px 18px;
     border: none;
-    border-radius: 6px;
-    background: #333;
-    color: white;
-    cursor: pointer;
+    border-radius: 7px;
+    background: #252b36;
+    color: #fff;
+}
+
+.logout-button:hover {
+    background: #414957;
 }
 
 
 /* =========================
-   MAIN CONTENT
+   MAIN LAYOUT
    ========================= */
 
 main {
     width: 90%;
-    max-width: 1000px;
-    margin: 30px auto;
+    max-width: 1100px;
+    margin: 32px auto;
+}
+
+.panel {
+    padding: 28px;
+    margin-bottom: 28px;
+    background: #fff;
+    border: 1px solid #e7eaf1;
+    border-radius: 12px;
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.panel-heading h2 {
+    font-size: 21px;
+}
+
+.panel-heading p {
+    margin-top: 4px;
+    color: #737b8c;
+    font-size: 14px;
 }
 
 
 /* =========================
-   EXPENSE FORM
+   SPENDING SUMMARY
    ========================= */
 
-.expense-form {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
-    margin-bottom: 30px;
+.summary-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-bottom: 28px;
 }
 
-.expense-form h2 {
-    margin-bottom: 20px;
+.summary-card {
+    padding: 25px;
+    background: #fff;
+    border: 1px solid #e7eaf1;
+    border-radius: 12px;
 }
+
+.summary-label {
+    color: #737b8c;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.summary-card h2 {
+    margin: 10px 0;
+    font-size: 30px;
+    overflow-wrap: anywhere;
+}
+
+.summary-description {
+    color: #8a91a0;
+    font-size: 13px;
+}
+
+
+/* =========================
+   FORM
+   ========================= */
 
 .form-group {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
 }
 
-.form-group input {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
 }
 
-.expense-form button {
-    padding: 10px 18px;
-    margin-right: 8px;
+.input-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #525b6b;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 1px solid #d8dce5;
+    border-radius: 7px;
+    background: #fff;
+    color: #202635;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #6366f1;
+    outline: 2px solid #e0e7ff;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+.primary-button,
+.secondary-button {
+    padding: 10px 16px;
     border: none;
-    border-radius: 6px;
-    background: #333;
-    color: white;
-    cursor: pointer;
+    border-radius: 7px;
 }
 
-.expense-form button:hover {
-    background: #555;
+.primary-button {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.primary-button:hover {
+    background: #4338ca;
+}
+
+.secondary-button {
+    background: #eceef4;
+    color: #303746;
+}
+
+.secondary-button:hover {
+    background: #dfe3ec;
 }
 
 
@@ -153,85 +283,201 @@ main {
    EXPENSE LIST
    ========================= */
 
-.expense-list {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+.list-heading {
+    margin-bottom: 22px;
 }
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.section-header button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 6px;
-    background: #333;
-    color: white;
-    cursor: pointer;
+.list-heading > div {
+    min-width: 0;
 }
 
 
 /* =========================
-   EXPENSE CARD
+   FILTERS
+   ========================= */
+
+.filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    align-items: end;
+    padding: 20px;
+    margin-bottom: 24px;
+    background: #f8f9fc;
+    border: 1px solid #e8eaf0;
+    border-radius: 10px;
+}
+
+.filter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    grid-column: 1 / -1;
+}
+
+
+/* =========================
+   EXPENSE CARDS
    ========================= */
 
 .expense-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
+    padding: 22px;
     margin-bottom: 15px;
+    border: 1px solid #e4e7ee;
+    border-radius: 10px;
+    background: #fff;
+    overflow-wrap: anywhere;
+}
+
+.expense-card:last-child {
+    margin-bottom: 0;
+}
+
+.expense-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .expense-card h3 {
-    margin-bottom: 10px;
+    font-size: 18px;
 }
 
-.expense-card p {
-    margin-bottom: 6px;
+.expense-amount {
+    font-size: 19px;
+    font-weight: 700;
+    color: #202635;
 }
 
-.expense-card button {
-    padding: 8px 14px;
-    margin-top: 12px;
-    margin-right: 8px;
+.category-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    background: #eef2ff;
+    color: #4338ca;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.expense-date,
+.expense-description {
+    margin-bottom: 7px;
+    color: #697386;
+    font-size: 14px;
+}
+
+.expense-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.edit-button,
+.delete-button {
+    padding: 8px 15px;
     border: none;
-    border-radius: 5px;
-    background: #333;
-    color: white;
-    cursor: pointer;
+    border-radius: 6px;
 }
 
-.expense-card button:hover {
-    background: #555;
+.edit-button {
+    background: #e8eaff;
+    color: #3730a3;
+}
+
+.edit-button:hover {
+    background: #d7dafe;
+}
+
+.delete-button {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.delete-button:hover {
+    background: #fecaca;
+}
+
+.empty-state {
+    padding: 25px 10px;
+    color: #737b8c;
+    text-align: center;
 }
 
 
 /* =========================
-   MOBILE
+   RESPONSIVE
    ========================= */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
+    .header {
+        padding: 20px;
+    }
 
-    .auth-container {
-        width: 90%;
-        margin: 50px auto;
+    .header h1 {
+        font-size: 23px;
+    }
+
+    main {
+        width: 94%;
+        margin: 22px auto;
+    }
+
+    .summary-container {
+        gap: 14px;
+    }
+
+    .summary-card {
+        padding: 18px;
+    }
+
+    .summary-card h2 {
+        font-size: 24px;
+    }
+
+    .panel {
+        padding: 20px;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .summary-container {
+        grid-template-columns: 1fr;
     }
 
     .form-group {
         grid-template-columns: 1fr;
     }
 
-    .header {
-        padding: 20px;
+    .full-width {
+        grid-column: auto;
     }
 
-    main {
-        width: 95%;
+    .header {
+        align-items: flex-start;
+    }
+
+    .logout-button {
+        padding: 9px 12px;
+    }
+
+    .panel-heading h2 {
+        font-size: 19px;
+    }
+
+    .expense-card-top {
+        flex-direction: column;
     }
 }

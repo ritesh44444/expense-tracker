@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Expense Tracker</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,109 +12,205 @@
 
     <!-- Header -->
     <header class="header">
-
         <div>
             <h1>Expense Tracker</h1>
-            <p>Manage your expenses easily</p>
+            <p>Manage your money, one expense at a time.</p>
         </div>
 
-        <button onclick="logout()">
+        <button class="logout-button" onclick="logout()">
             Logout
         </button>
-
     </header>
 
-
-    <!-- Add / Edit Expense -->
     <main>
 
-        <section class="expense-form">
+        <!-- Spending Summary -->
+        <section class="summary-container">
 
-            <h2>Add Expense</h2>
-
-            <!-- Used internally when editing -->
-            <input
-                id="editId"
-                type="hidden"
-            >
-
-            <div class="form-group">
-
-                <input
-                    id="title"
-                    type="text"
-                    placeholder="Expense title"
-                >
-
-                <input
-                    id="amount"
-                    type="number"
-                    placeholder="Amount"
-                    step="0.01"
-                >
-
-                <input
-                    id="category"
-                    type="text"
-                    placeholder="Category"
-                >
-
-                <input
-                    id="date"
-                    type="date"
-                >
-
-                <input
-                    id="description"
-                    type="text"
-                    placeholder="Description"
-                >
-
+            <div class="summary-card">
+                <p class="summary-label">Total Spending</p>
+                <h2 id="totalSpending">₹0.00</h2>
+                <p class="summary-description">Across all your expenses</p>
             </div>
 
-            <button
-                id="addButton"
-                onclick="handleAddExpense()"
-            >
-                Add Expense
-            </button>
-
-            <button
-                onclick="clearExpenseForm()"
-            >
-                Clear
-            </button>
+            <div class="summary-card">
+                <p class="summary-label">This Month</p>
+                <h2 id="monthlySpending">₹0.00</h2>
+                <p class="summary-description">Spending in the current month</p>
+            </div>
 
         </section>
 
 
-        <!-- Expenses -->
-        <section class="expense-list">
+        <!-- Add / Edit Expense -->
+        <section class="panel expense-form">
 
-            <div class="section-header">
+            <div class="panel-heading">
+                <div>
+                    <h2 id="formHeading">Add Expense</h2>
+                    <p>Record a new transaction.</p>
+                </div>
+            </div>
 
-                <h2>My Expenses</h2>
+            <input id="editId" type="hidden">
 
-                <button onclick="loadExpenses()">
+            <form id="expenseForm">
+
+                <div class="form-group">
+
+                    <div class="input-group">
+                        <label for="title">Expense title *</label>
+                        <input
+                            id="title"
+                            type="text"
+                            placeholder="e.g. Lunch"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label for="amount">Amount (₹) *</label>
+                        <input
+                            id="amount"
+                            type="number"
+                            placeholder="e.g. 250"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label for="category">Category *</label>
+                        <input
+                            id="category"
+                            type="text"
+                            placeholder="e.g. Food"
+                            maxlength="50"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label for="date">Date *</label>
+                        <input
+                            id="date"
+                            type="date"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label for="description">Description</label>
+                        <input
+                            id="description"
+                            type="text"
+                            placeholder="Optional details"
+                            maxlength="500"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button id="addButton" type="submit" class="primary-button">
+                        Add Expense
+                    </button>
+
+                    <button
+                        id="clearButton"
+                        type="button"
+                        class="secondary-button"
+                    >
+                        Clear
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- Expense List -->
+        <section class="panel expense-list">
+
+            <div class="panel-heading list-heading">
+                <div>
+                    <h2>My Expenses</h2>
+                    <p id="expenseCount">Loading expenses...</p>
+                </div>
+
+                <button
+                    type="button"
+                    id="refreshButton"
+                    class="secondary-button"
+                >
                     Refresh
                 </button>
+            </div>
+
+
+            <!-- Filters -->
+            <div class="filters">
+
+                <div class="input-group">
+                    <label for="categoryFilter">Category</label>
+
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="startDate">From date</label>
+                    <input type="date" id="startDate">
+                </div>
+
+                <div class="input-group">
+                    <label for="endDate">To date</label>
+                    <input type="date" id="endDate">
+                </div>
+
+                <div class="filter-actions">
+                    <button
+                        type="button"
+                        id="applyFiltersButton"
+                        class="primary-button"
+                    >
+                        Apply Filters
+                    </button>
+
+                    <button
+                        type="button"
+                        id="resetFiltersButton"
+                        class="secondary-button"
+                    >
+                        Reset
+                    </button>
+                </div>
 
             </div>
 
-            <div id="expenses"></div>
+
+            <!-- Expenses rendered by JavaScript -->
+            <div id="expenses" aria-live="polite">
+                <p>Loading expenses...</p>
+            </div>
 
         </section>
 
     </main>
 
 
-    <script src="script.js"></script>
+    <!-- Redirect if no token exists -->
     <script>
-    if (!localStorage.getItem("token")) {
-        window.location.href = "login.html";
-    }
+        if (!localStorage.getItem("token")) {
+            window.location.replace("login.html");
+        }
     </script>
 
-</body>
+    <script src="script.js"></script>
 
+</body>
 </html>
